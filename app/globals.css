@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Blue gradient border with custom utility classes */
+
+.gradient-border {
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 0.5rem; /* Matches Tailwind's 'rounded-lg' */
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    border-radius: 0.5rem;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa, #93c5fd);
+    opacity: 0.8;
+  }
+  
