@@ -7,6 +7,7 @@ function Home() {
     <div>
         <Headerdarknext/>
         <Herodash2/>
+        
     </div>
   )
 }
