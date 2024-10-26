@@ -5,7 +5,7 @@ import Headerdarknext from "../_components/Headerdarknxt";
 function Blogs() {
   return (
     <div>
-      <Headerdarknext/>
+      <Headerdarknext />
       <Blogtest />
     </div>
   );
