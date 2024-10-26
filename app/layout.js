@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
       <SignedOut> 
         </SignedOut>
         <SignedIn>
-          <UserButton showName/>
+          {/* <UserButton showName/> */}
         </SignedIn>
         {children}
         <Footer/>
