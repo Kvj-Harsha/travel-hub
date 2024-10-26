@@ -12,7 +12,7 @@ function Sec1() {
 
             <p className="mt-4 text-gray-300">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-              dolores iure fugit totam iste obcaecati. Consequatur ipsa quod
+              dolores  fugit totam iste obcaecati. Consequatur ipsa quod
               ipsum sequi culpa delectus, cumque id tenetur quibusdam, quos fuga
               minima.
             </p>
