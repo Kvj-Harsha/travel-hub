@@ -7,10 +7,10 @@ import Sec2 from "./_components/Sec2";
 function page() {
   return (
     <div>
-      <Header />
+     <Header />
       <Hero />
       <Sec1 />
-      <Sec2/>
+      <Sec2/> 
     </div>
   );
 }
