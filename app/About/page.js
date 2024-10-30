@@ -1,13 +1,12 @@
 import React from 'react'
-import Errorpage from '../_components/Errorpage'
 import Headerdarknext from '../_components/Headerdarknxt'
+import Heroabout from '../_components/Heroabout'
 
 function About() {
   return (
     <div>
         <Headerdarknext/>
-        <h1 align="center">Welcome to About</h1>
-      <Errorpage/>
+        <Heroabout/>
     </div>
   )
 }
