@@ -203,13 +203,18 @@ export default function Itinerary() {
         </form>
 
         {submittedData && (
-          <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-            <h2 className="text-lg font-semibold">Trip Data Summary</h2>
-            <pre className="text-sm text-gray-700 mt-2">
-              {JSON.stringify(submittedData, null, 2)}
-            </pre>
-          </div>
-        )}
+  <div className="mt-8 p-4 bg-gray-100 rounded-lg">
+    <h2 className="text-lg font-semibold">Trip Data Summary</h2>
+    <div className="text-sm text-gray-700 mt-2">
+      {Object.entries(submittedData).map(([key, value]) => (
+        <p key={key}>
+          <strong>{key.replace(/([A-Z])/g, ' $1')}: </strong> {value}
+        </p>
+      ))}
+    </div>
+  </div>
+)
+}
       </div>
     </div>
   );
