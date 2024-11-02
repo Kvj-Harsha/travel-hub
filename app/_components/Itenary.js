@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { FaCalendarAlt, FaHotel, FaCar, FaDollarSign } from "react-icons/fa";
+import { FaHotel, FaCar, FaDollarSign, FaCalendarAlt } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { chatSession } from "../service/AIModal";
@@ -20,10 +20,8 @@ const db = getFirestore(app);
 
 export default function Itinerary() {
   const [tripData, setTripData] = useState({
-    tripName: "",
     destinations: "",
-    startDate: "",
-    endDate: "",
+    days: 1,
     travelers: 1,
     accommodation: "",
     transport: "",
@@ -33,6 +31,7 @@ export default function Itinerary() {
     budget: 500,
   });
   const [submittedData, setSubmittedData] = useState(null);
+  const [travelPlan, setTravelPlan] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +41,7 @@ export default function Itinerary() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!tripData.tripName || !tripData.destinations || !tripData.startDate || !tripData.endDate || !tripData.travelers) {
+    if (!tripData.destinations || !tripData.days || !tripData.travelers) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -63,21 +62,18 @@ export default function Itinerary() {
   };
 
   const generateTravelPlan = async () => {
-    const days = (new Date(tripData.endDate) - new Date(tripData.startDate)) / (1000 * 60 * 60 * 24);
     const FINAL_PROMPT = `
-      Generate a travel plan for a trip named "${tripData.tripName}" to the destination(s) "${tripData.destinations}" from ${tripData.startDate} to ${tripData.endDate}, 
-      with ${tripData.travelers} traveler(s). Accommodation preference is "${tripData.accommodation}" and preferred mode of transportation is "${tripData.transport}". 
-      The budget for the trip is ${tripData.budget} USD. Provide a hotel options list including HotelName, HotelAddress, Price, HotelImageURL, 
-      GeoCoordinates, Rating, and Description. Additionally, create a daily itinerary that includes place names, details, images, geo-coordinates, 
-      ticket pricing, travel time between locations, and recommended visit times for each of the ${days} days in JSON format.
+      Generate a travel plan for a trip to "${tripData.destinations}" with ${tripData.days} days and ${tripData.travelers} traveler(s). 
+      Accommodation preference is "${tripData.accommodation}" and preferred mode of transportation is "${tripData.transport}". 
+      The budget for the trip is ${tripData.budget} USD. Provide a list of hotel options including HotelName, HotelAddress, Price, 
+      HotelImageURL, GeoCoordinates, Rating, and Description. Additionally, create a daily itinerary that includes place names, details, 
+      images, geo-coordinates, ticket pricing, travel time between locations, and recommended visit times for each of the ${tripData.days} days in JSON format.
     `;
-
-    console.log("Sending prompt to Gemini API:", FINAL_PROMPT); // Debugging log
 
     try {
       const result = await chatSession.sendMessage(FINAL_PROMPT);
       const responseText = await result?.response?.text();
-      console.log("Travel plan response from Gemini API:", responseText);
+      setTravelPlan(responseText);
     } catch (error) {
       console.error("Error generating travel plan: ", error);
     }
@@ -92,10 +88,8 @@ export default function Itinerary() {
           <h2 className="text-lg font-semibold">Trip Details</h2>
 
           {[
-            { icon: FaCalendarAlt, type: "text", name: "tripName", placeholder: "Trip Name", required: true },
             { icon: FaHotel, type: "text", name: "destinations", placeholder: "Destinations", required: true },
-            { icon: FaCalendarAlt, type: "date", name: "startDate", required: true },
-            { icon: FaCalendarAlt, type: "date", name: "endDate", required: true },
+            { icon: FaCalendarAlt, type: "number", name: "days", placeholder: "Number of Days", min: 1, required: true },
             { icon: FaCar, type: "number", name: "travelers", placeholder: "Number of Travelers", min: 1, required: true },
             { icon: FaHotel, type: "text", name: "accommodation", placeholder: "Accommodation Preference" },
             { icon: FaCar, type: "text", name: "transport", placeholder: "Preferred Transport" },
@@ -142,6 +136,13 @@ export default function Itinerary() {
                 </p>
               ))}
             </div>
+          </div>
+        )}
+
+        {travelPlan && (
+          <div className="mt-8 p-4 bg-gray-100 rounded-lg">
+            <h2 className="text-lg font-semibold">Generated Travel Plan</h2>
+            <pre className="text-sm text-gray-700 whitespace-pre-wrap mt-2">{travelPlan}</pre>
           </div>
         )}
       </div>
