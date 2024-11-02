@@ -5,7 +5,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { chatSession } from "../service/AIModal";
 
-
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAiUZe-0sJ6_EG35BpT1zJCPCzct9UrkCc",
@@ -15,6 +14,7 @@ const firebaseConfig = {
   messagingSenderId: "961577383911",
   appId: "1:961577383911:web:b0afb4df1d9e79a6c9af42"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -36,7 +36,7 @@ export default function Itinerary() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setTripData({ ...tripData, [name]: value });
+    setTripData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -53,7 +53,8 @@ export default function Itinerary() {
       const docRef = await addDoc(collection(db, "itineraries"), tripData);
       console.log("Document written with ID: ", docRef.id);
       alert("Trip confirmed and saved!");
-      console.log("Trip Data Submitted:", tripData); // Added console log here
+
+      // Generate travel plan after successfully saving to Firestore
       await generateTravelPlan();
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -71,9 +72,12 @@ export default function Itinerary() {
       ticket pricing, travel time between locations, and recommended visit times for each of the ${days} days in JSON format.
     `;
 
+    console.log("Sending prompt to Gemini API:", FINAL_PROMPT); // Debugging log
+
     try {
       const result = await chatSession.sendMessage(FINAL_PROMPT);
-      console.log(result?.response?.text());
+      const responseText = await result?.response?.text();
+      console.log("Travel plan response from Gemini API:", responseText);
     } catch (error) {
       console.error("Error generating travel plan: ", error);
     }
@@ -87,141 +91,38 @@ export default function Itinerary() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <h2 className="text-lg font-semibold">Trip Details</h2>
 
-          <div className="flex items-center space-x-3">
-            <FaCalendarAlt className="text-blue-500" />
-            <input
-              type="text"
-              name="tripName"
-              value={tripData.tripName}
-              onChange={handleInputChange}
-              placeholder="Trip Name"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-              required
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaHotel className="text-blue-500" />
-            <input
-              type="text"
-              name="destinations"
-              value={tripData.destinations}
-              onChange={handleInputChange}
-              placeholder="Destinations"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-              required
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaCalendarAlt className="text-blue-500" />
-            <input
-              type="date"
-              name="startDate"
-              value={tripData.startDate}
-              onChange={handleInputChange}
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-              required
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaCalendarAlt className="text-blue-500" />
-            <input
-              type="date"
-              name="endDate"
-              value={tripData.endDate}
-              onChange={handleInputChange}
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-              required
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaCar className="text-blue-500" />
-            <input
-              type="number"
-              name="travelers"
-              value={tripData.travelers}
-              onChange={handleInputChange}
-              placeholder="Number of Travelers"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-              min="1"
-              required
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaHotel className="text-blue-500" />
-            <input
-              type="text"
-              name="accommodation"
-              value={tripData.accommodation}
-              onChange={handleInputChange}
-              placeholder="Accommodation Preference"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaCar className="text-blue-500" />
-            <input
-              type="text"
-              name="transport"
-              value={tripData.transport}
-              onChange={handleInputChange}
-              placeholder="Preferred Transport"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaCalendarAlt className="text-blue-500" />
-            <input
-              type="text"
-              name="activities"
-              value={tripData.activities}
-              onChange={handleInputChange}
-              placeholder="Activities"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaCalendarAlt className="text-blue-500" />
-            <input
-              type="text"
-              name="cuisine"
-              value={tripData.cuisine}
-              onChange={handleInputChange}
-              placeholder="Cuisine Preferences"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaCalendarAlt className="text-blue-500" />
-            <textarea
-              name="additionalNotes"
-              value={tripData.additionalNotes}
-              onChange={handleInputChange}
-              placeholder="Additional Notes"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-            />
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <FaDollarSign className="text-blue-500" />
-            <input
-              type="number"
-              name="budget"
-              value={tripData.budget}
-              onChange={handleInputChange}
-              placeholder="Budget (USD)"
-              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-              min="0"
-            />
-          </div>
+          {[
+            { icon: FaCalendarAlt, type: "text", name: "tripName", placeholder: "Trip Name", required: true },
+            { icon: FaHotel, type: "text", name: "destinations", placeholder: "Destinations", required: true },
+            { icon: FaCalendarAlt, type: "date", name: "startDate", required: true },
+            { icon: FaCalendarAlt, type: "date", name: "endDate", required: true },
+            { icon: FaCar, type: "number", name: "travelers", placeholder: "Number of Travelers", min: 1, required: true },
+            { icon: FaHotel, type: "text", name: "accommodation", placeholder: "Accommodation Preference" },
+            { icon: FaCar, type: "text", name: "transport", placeholder: "Preferred Transport" },
+            { icon: FaCalendarAlt, type: "text", name: "activities", placeholder: "Activities" },
+            { icon: FaCalendarAlt, type: "text", name: "cuisine", placeholder: "Cuisine Preferences" },
+            { icon: FaCalendarAlt, type: "textarea", name: "additionalNotes", placeholder: "Additional Notes" },
+            { icon: FaDollarSign, type: "number", name: "budget", placeholder: "Budget (USD)", min: 0 },
+          ].map(({ icon: Icon, ...inputProps }, index) => (
+            <div key={index} className="flex items-center space-x-3">
+              <Icon className="text-blue-500" />
+              {inputProps.type === "textarea" ? (
+                <textarea
+                  {...inputProps}
+                  value={tripData[inputProps.name]}
+                  onChange={handleInputChange}
+                  className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
+                />
+              ) : (
+                <input
+                  {...inputProps}
+                  value={tripData[inputProps.name]}
+                  onChange={handleInputChange}
+                  className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
+                />
+              )}
+            </div>
+          ))}
 
           <button
             type="submit"
