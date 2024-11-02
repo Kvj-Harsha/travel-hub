@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
+import Headerdarknext from "@/app/_components/Headerdarknxt";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -41,8 +42,10 @@ function ViewTrip() {
   }, [tripID]);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold">Travel Plan for Trip ID: {tripID}</h1>
+    <div>
+      <Headerdarknext/>
+    <div className="p-6 bg-[#111827]">
+      <h1 className="text-2xl text-white font-semibold">Travel Plan for Trip ID: {tripID}</h1>
       {travelPlan ? (
         <div className="mt-4 bg-gray-100 p-4 rounded">
           <h2 className="text-xl font-semibold">Travel Plan Details</h2>
@@ -74,6 +77,7 @@ function ViewTrip() {
         <p>Loading travel plan...</p>
       )}
     </div>
+        </div>
   );
 }
 
