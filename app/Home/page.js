@@ -1,16 +1,18 @@
-import React from 'react'
-import Herodash from '../_components/Herodash'
-import Headerdarknext from '../_components/Headerdarknxt'
+import React from 'react';
+import Herodash from '../_components/Herodash';
+import Headerdarknext from '../_components/Headerdarknxt';
 import { UserButton } from "@clerk/nextjs";
 
 function Home() {
   return (
-    <div>
-        <UserButton/>
-        <Headerdarknext/>
-        <Herodash/>
+    <div className="relative h-screen">
+      <UserButton 
+        className="absolute top-4 right-4 bg-transparent text-black border-none" 
+      />
+      <Headerdarknext />
+      <Herodash />
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

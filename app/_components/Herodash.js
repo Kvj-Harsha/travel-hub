@@ -61,19 +61,19 @@ export default async function Herodash() {
 
             <div className='flex gap-4 p-10'>
               <DashboardCard
-                href="#"
+                href="/Tripplanner"
                 borderColor="border-[#2a6eca]"
                 title="Trip Planner"
                 description="Plan your trips seamlessly based on your requirements with help of powerful Gemini API."
               />
               <DashboardCard
-                href="#"
+                href="/Connections"
                 borderColor="border-white"
                 title="Travel Connections"
                 description="Connect to people who share your interests!"
               />
               <DashboardCard
-                href="#"
+                href="/Blogs"
                 borderColor="border-white"
                 title="Travel Blogs"
                 description="Check out the latest and trending blogs from around the world!"
