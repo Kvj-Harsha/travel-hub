@@ -1,10 +1,11 @@
-// app\view-trip\[tripID]\page.js
+// app/view-trip/[tripID]/page.js
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import Headerdarknext from "@/app/_components/Headerdarknxt";
+import { FaHotel, FaCalendarAlt, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -22,62 +23,134 @@ const db = getFirestore(app);
 function ViewTrip() {
   const { tripID } = useParams();
   const [travelPlan, setTravelPlan] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTravelPlan = async () => {
-      console.log("Current tripID: ", tripID); // Log the tripID
-      const docRef = doc(db, "itineraries", tripID);
-      const docSnap = await getDoc(docRef);
+      try {
+        const docRef = doc(db, "itineraries", tripID);
+        const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        console.log("Fetched document data: ", data); // Log the fetched data
-        setTravelPlan(data.travelPlan); // Set the travelPlan if it exists
-      } else {
-        console.log("No such document!");
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+
+          // Sort itinerary by day if it exists and is an array
+          if (data.travelPlan && Array.isArray(data.travelPlan.itinerary)) {
+            data.travelPlan.itinerary = data.travelPlan.itinerary.sort((a, b) => {
+              const dayA = parseInt(a.day.match(/\d+/)[0], 10); // Extract number from "Day X"
+              const dayB = parseInt(b.day.match(/\d+/)[0], 10);
+              return dayA - dayB; // Sort numerically
+            });
+          }
+          setTravelPlan(data.travelPlan);
+        } else {
+          setError("No travel plan found.");
+        }
+      } catch (err) {
+        setError("Failed to fetch travel plan.");
       }
     };
 
     fetchTravelPlan();
   }, [tripID]);
 
+  const renderField = (key, value) => {
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      return (
+        <div key={key} className="mb-4">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2 pl-4 border-l-4 border-gray-300">
+            {key.replace(/([A-Z])/g, ' $1')}
+          </h3>
+          <div className="ml-6">
+            {Object.entries(value).map(([nestedKey, nestedValue]) =>
+              renderField(nestedKey, nestedValue)
+            )}
+          </div>
+        </div>
+      );
+    } else if (Array.isArray(value)) {
+      return (
+        <div key={key} className="mb-4">
+          <h3 className="text-lg font-semibold text-gray-700 mb-2 pl-4 border-l-4 border-gray-300">
+            {key.replace(/([A-Z])/g, ' $1')}
+          </h3>
+          <div className="flex flex-wrap gap-4 ml-6">
+            {value.map((item, index) => (
+              <div key={index} className="bg-gray-50 p-3 rounded-lg shadow-md w-full md:w-48">
+                {typeof item === 'object' ? renderField("", item) : <p className="break-words">{item}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    } else {
+      // Handling for specific fields
+      if (key.toLowerCase().includes("location") && typeof value === "string") {
+        const coordinates = value.split(','); // Assuming value is in "latitude,longitude" format
+        if (coordinates.length === 2) {
+          const latitude = coordinates[0].trim();
+          const longitude = coordinates[1].trim();
+          const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+          return (
+            <div key={key} className="flex items-start py-2">
+              <FaMapMarkerAlt className="mr-2 text-red-500" />
+              <span className="font-medium text-gray-600 mr-4">{key.replace(/([A-Z])/g, ' $1')}:</span>
+              <a href={googleMapsLink} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
+                View on Google Maps
+              </a>
+            </div>
+          );
+        }
+      }
+
+      if (key.toLowerCase().includes("imageURL")) {
+        const placeholderImage = "https://via.placeholder.com/150"; // Placeholder image URL
+        return (
+          <div key={key} className="flex items-start py-2">
+            <span className="font-medium text-gray-600 mr-4">{key.replace(/([A-Z])/g, ' $1')}:</span>
+            <img src={placeholderImage} alt="Placeholder" className="w-24 h-24 object-cover mr-2" />
+            <a href={value} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
+              View Image
+            </a>
+          </div>
+        );
+      }
+
+      return (
+        <div key={key} className="flex items-start py-2">
+          {key.toLowerCase().includes("hotel") && <FaHotel className="mr-2 text-blue-500" />}
+          {key.toLowerCase().includes("date") && <FaCalendarAlt className="mr-2 text-green-500" />}
+          {key.toLowerCase().includes("time") && <FaClock className="mr-2 text-purple-500" />}
+          <span className="font-medium text-gray-600 mr-4">{key.replace(/([A-Z])/g, ' $1')}:</span>
+          <span className="text-gray-800 break-words">{value}</span>
+        </div>
+      );
+    }
+  };
+
   return (
     <div>
-      <Headerdarknext/>
-    <div className="p-6 bg-[#111827]">
-      <h1 className="text-2xl text-white font-semibold">Travel Plan for Trip ID: {tripID}</h1>
-      {travelPlan ? (
-        <div className="mt-4 bg-gray-100 p-4 rounded">
-          <h2 className="text-xl font-semibold">Travel Plan Details</h2>
-          <table className="min-w-full border-collapse border border-gray-300 mt-4">
-            <thead>
-              <tr className="bg-blue-500 text-white">
-                <th className="border border-gray-300 p-2">Field</th>
-                <th className="border border-gray-300 p-2">Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Loop through the travel plan data and display each entry */}
+      <Headerdarknext />
+      <div className="p-8 bg-[#111827] min-h-screen">
+        <h1 className="text-3xl text-white font-bold mb-6">Travel Plan for Trip ID: {tripID}</h1>
+        {error ? (
+          <p className="text-red-500">{error}</p>
+        ) : travelPlan ? (
+          <div className="bg-white p-8 rounded-lg shadow-lg space-y-8">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Travel Plan Details</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {Object.entries(travelPlan).map(([key, value]) => (
-                <tr key={key}>
-                  <td className="border border-gray-300 p-2 font-semibold">{key.replace(/([A-Z])/g, ' $1')}</td>
-                  <td className="border border-gray-300 p-2">
-                    {typeof value === 'object' ? (
-                      <pre className="whitespace-pre-wrap">{JSON.stringify(value, null, 2)}</pre>
-                    ) : (
-                      value
-                    )}
-                  </td>
-                </tr>
+                <div key={key} className="bg-gray-50 p-6 rounded-lg shadow-md">
+                  {renderField(key, value)}
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <p>Loading travel plan...</p>
-      )}
+            </div>
+          </div>
+        ) : (
+          <p className="text-white text-lg">Loading travel plan...</p>
+        )}
+      </div>
     </div>
-        </div>
   );
 }
 
