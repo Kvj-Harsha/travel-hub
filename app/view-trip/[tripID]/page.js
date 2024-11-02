@@ -1,3 +1,4 @@
+// app\view-trip\[tripID]\page.js
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";

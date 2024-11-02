@@ -1,8 +1,10 @@
+//app\Tripplanner\Saved-trips\page.js
 "use client";
 import React, { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import Link from "next/link"; // Ensure Link is imported
+
+import Link from "next/link";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -56,31 +58,46 @@ export default function SavedTrips() {
   }
 
   return (
-    <div className="min-h-screen bg-[#111827] flex flex-col items-center p-6">
-      <h1 className="text-2xl font-semibold text-white mb-4">My Saved Trips</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl w-full">
+    <div>
+    <div className="min-h-screen bg-[#111827] flex flex-col  p-6">
+      <h1 className="text-3xl font-semibold text-white mb-8">My Saved Trips</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl w-full">
         {savedTrips.length === 0 ? (
-          <p className="text-gray-600">No saved trips found.</p>
+          <p className="text-gray-400">No saved trips found.</p>
         ) : (
           savedTrips.map(trip => (
-            <div key={trip.id} className="border rounded-lg p-4 bg-white shadow-md">
-              <h2 className="text-lg font-semibold">{trip.destinations}</h2>
-              <p><strong>Trip ID:</strong> {trip.tripID}</p>
-              <p><strong>Days:</strong> {trip.days}</p>
-              <p><strong>Travelers:</strong> {trip.travelers}</p>
-              <p><strong>Accommodation:</strong> {trip.accommodation}</p>
-              <p><strong>Transport:</strong> {trip.transport}</p>
-              <p><strong>Budget:</strong> ${trip.budget}</p>
-              <p><strong>Additional Notes:</strong> {trip.additionalNotes}</p>
-              <div className="flex justify-between mt-4">
-                <Link href={`/view-trip/${trip.tripID}`} passHref>
-                    <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-                        View Trip
-                    </button>
+            <div
+              key={trip.id}
+              className="bg-white rounded-lg p-6 shadow-lg flex flex-col justify-between transition transform hover:scale-105 hover:shadow-2xl"
+            >
+              <div className="flex flex-col gap-2">
+                <h2 className="text-xl font-semibold mb-2 text-gray-800">{trip.destinations}</h2>
+                <div className="text-gray-700 grid grid-cols-2 gap-y-1">
+                  <span className="text-sm">Trip ID:</span>
+                  <span className="font-medium">{trip.tripID}</span>
+                  <span className="text-sm">Days:</span>
+                  <span className="font-medium">{trip.days}</span>
+                  <span className="text-sm">Travelers:</span>
+                  <span className="font-medium">{trip.travelers}</span>
+                  <span className="text-sm">Accommodation:</span>
+                  <span className="font-medium">{trip.accommodation}</span>
+                  <span className="text-sm">Transport:</span>
+                  <span className="font-medium">{trip.transport}</span>
+                  <span className="text-sm">Budget:</span>
+                  <span className="font-medium">${trip.budget}</span>
+                  <span className="text-sm">Notes:</span>
+                  <span className="font-medium">{trip.additionalNotes}</span>
+                </div>
+              </div>
+              <div className="flex gap-4 mt-6 w-full">
+                <Link href={`/view-trip/${trip.id}`} passHref>
+                  <button className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg transition hover:bg-blue-600">
+                    View Trip
+                  </button>
                 </Link>
                 <button
                   onClick={() => handleDeleteTrip(trip.id)}
-                  className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600"
+                  className="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg transition hover:bg-red-600"
                 >
                   Delete Trip
                 </button>
@@ -90,5 +107,6 @@ export default function SavedTrips() {
         )}
       </div>
     </div>
+          </div>
   );
 }
