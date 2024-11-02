@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { FaHotel, FaCar, FaDollarSign, FaCalendarAlt } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import { chatSession } from "../service/AIModal";
+import Link from "next/link";  // Import Link for navigation
 
 // Firebase configuration
 const firebaseConfig = {
@@ -29,9 +30,14 @@ export default function Itinerary() {
     cuisine: "",
     additionalNotes: "",
     budget: 500,
+    tripID: "" // Add tripID to the state
   });
   const [submittedData, setSubmittedData] = useState(null);
   const [travelPlan, setTravelPlan] = useState(null);
+  const [docId, setDocId] = useState(null); // to store the document ID
+
+  // Generate a unique Trip ID
+  const generateTripID = () => `TRIP-${Math.floor(Math.random() * 1000000)}`;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,22 +52,26 @@ export default function Itinerary() {
       return;
     }
 
-    setSubmittedData(tripData);
+    // Generate and add the tripID to tripData before saving
+    const tripID = generateTripID();
+    const updatedTripData = { ...tripData, tripID };
+    setSubmittedData(updatedTripData);
 
     try {
-      const docRef = await addDoc(collection(db, "itineraries"), tripData);
+      const docRef = await addDoc(collection(db, "itineraries"), updatedTripData);
       console.log("Document written with ID: ", docRef.id);
-      alert("Trip confirmed and saved!");
+      setDocId(docRef.id); // Store the document ID
+      alert(`Trip confirmed and saved with Trip ID: ${tripID}`);
 
       // Generate travel plan after successfully saving to Firestore
-      await generateTravelPlan();
+      await generateTravelPlan(docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
       alert("Failed to save trip. Try again.");
     }
   };
 
-  const generateTravelPlan = async () => {
+  const generateTravelPlan = async (docId) => {
     const FINAL_PROMPT = `
       Generate a travel plan for a trip to "${tripData.destinations}" with ${tripData.days} days and ${tripData.travelers} traveler(s). 
       Accommodation preference is "${tripData.accommodation}" and preferred mode of transportation is "${tripData.transport}". 
@@ -74,6 +84,16 @@ export default function Itinerary() {
       const result = await chatSession.sendMessage(FINAL_PROMPT);
       const responseText = await result?.response?.text();
       setTravelPlan(responseText);
+
+      // Parse the JSON response (assuming responseText is in JSON format)
+      const travelPlanData = JSON.parse(responseText);
+
+      // Update the Firestore document with the generated travel plan
+      const itineraryDocRef = doc(db, "itineraries", docId);
+      await updateDoc(itineraryDocRef, { travelPlan: travelPlanData });
+
+      console.log("Travel plan successfully added to the document");
+      alert("Travel plan saved successfully!");
     } catch (error) {
       console.error("Error generating travel plan: ", error);
     }
@@ -142,7 +162,13 @@ export default function Itinerary() {
         {travelPlan && (
           <div className="mt-8 p-4 bg-gray-100 rounded-lg">
             <h2 className="text-lg font-semibold">Generated Travel Plan</h2>
-            <pre className="text-sm text-gray-700 whitespace-pre-wrap mt-2">{travelPlan}</pre>
+            <pre className="text-sm text-gray-700 whitespace-pre-wrap mt-2">{JSON.stringify(travelPlan, null, 2)}</pre>
+
+            <Link href={`/view-trip/${submittedData.tripID}`}>
+              <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+                View Plan
+              </button>
+            </Link>
           </div>
         )}
       </div>
