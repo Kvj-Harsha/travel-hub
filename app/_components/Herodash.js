@@ -1,5 +1,6 @@
 import React from 'react';
 import { currentUser } from "@clerk/nextjs/server";
+import Finalcard from './Finalcard';
 
 // Reusable Card Component
 function DashboardCard({ href, borderColor, title, description }) {
@@ -34,14 +35,7 @@ function DashboardCard({ href, borderColor, title, description }) {
   );
 }
 
-async function listWords() {
-  // Static list of words
-  return ['travel', 'adventure', 'explore', 'journey', 'vacation'];
-}
-
-
 export default async function Herodash() {
-  const words = (await listWords()).reverse();
   const user = await currentUser();
   const username = user?.username || 'Guest';
 
@@ -58,27 +52,7 @@ export default async function Herodash() {
             <p className="mx-auto mt-4 max-w-xl sm:text-xl/relaxed">
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt illo tenetur fuga ducimus numquam ea!
             </p>
-
-            <div className='flex gap-4 p-10'>
-              <DashboardCard
-                href="/Tripplanner"
-                borderColor="border-[#2a6eca]"
-                title="Trip Planner"
-                description="Plan your trips seamlessly based on your requirements with help of powerful Gemini API."
-              />
-              <DashboardCard
-                href="/Connections"
-                borderColor="border-white"
-                title="Travel Connections"
-                description="Connect to people who share your interests!"
-              />
-              <DashboardCard
-                href="/Blogs"
-                borderColor="border-white"
-                title="Travel Blogs"
-                description="Check out the latest and trending blogs from around the world!"
-              />
-            </div>
+              <Finalcard/>
           </div>
         </div>
       </section>

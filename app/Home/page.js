@@ -1,6 +1,7 @@
 import React from 'react';
 import Herodash from '../_components/Herodash';
 import Headerdarknext from '../_components/Headerdarknxt';
+import Filler1 from'../_components/Filler1';
 import { UserButton } from "@clerk/nextjs";
 
 function Home() {
@@ -11,6 +12,7 @@ function Home() {
       />
       <Headerdarknext />
       <Herodash />
+
     </div>
   );
 }

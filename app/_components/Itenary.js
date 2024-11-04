@@ -164,7 +164,7 @@ export default function Itinerary() {
             <h2 className="text-lg font-semibold">Generated Travel Plan</h2>
             {/* <pre className="text-sm text-gray-700 whitespace-pre-wrap mt-2">{JSON.stringify(travelPlan, null, 2)}</pre> */}
 
-            <Link href={`/view-trip/${submittedData.id}`}>
+            <Link href={`/view-trip/${submittedData.tripID }`}>
               <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
                 View Plan
               </button>
