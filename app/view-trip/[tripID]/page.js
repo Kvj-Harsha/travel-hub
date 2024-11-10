@@ -96,7 +96,7 @@ function ViewTrip() {
               <FaMapMarkerAlt className="mr-2 text-red-500" />
               <span className="font-medium text-gray-600 mr-4">{key.replace(/([A-Z])/g, ' $1')}:</span>
               <a href={googleMapsLink} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
-                View on Google Maps
+                View on Google Maps!
               </a>
             </div>
           );
