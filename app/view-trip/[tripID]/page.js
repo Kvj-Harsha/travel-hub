@@ -34,12 +34,12 @@ function ViewTrip() {
         if (docSnap.exists()) {
           const data = docSnap.data();
 
-          // Sort itinerary by day if it exists and is an array
+          // Sort itinerary by day number if it exists and is an array
           if (data.travelPlan && Array.isArray(data.travelPlan.itinerary)) {
-            data.travelPlan.itinerary = data.travelPlan.itinerary.sort((a, b) => {
-              const dayA = parseInt(a.day.match(/\d+/)[0], 10); // Extract number from "Day X"
-              const dayB = parseInt(b.day.match(/\d+/)[0], 10);
-              return dayA - dayB; // Sort numerically
+            data.travelPlan.itinerary.sort((a, b) => {
+              const dayA = parseInt(a.day.replace(/\D/g, ""), 10); // Extract numeric part only
+              const dayB = parseInt(b.day.replace(/\D/g, ""), 10);
+              return dayA - dayB; // Sort numerically by day
             });
           }
           setTravelPlan(data.travelPlan);
@@ -74,9 +74,9 @@ function ViewTrip() {
           <h3 className="text-lg font-semibold text-gray-700 mb-2 pl-4 border-l-4 border-gray-300">
             {key.replace(/([A-Z])/g, ' $1')}
           </h3>
-          <div className="flex flex-wrap gap-4 ml-6">
+          <div className="flex flex-col gap-4 ml-6">
             {value.map((item, index) => (
-              <div key={index} className="bg-gray-50 p-3 rounded-lg shadow-md w-full md:w-48">
+              <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-md">
                 {typeof item === 'object' ? renderField("", item) : <p className="break-words">{item}</p>}
               </div>
             ))}
@@ -84,9 +84,9 @@ function ViewTrip() {
         </div>
       );
     } else {
-      // Handling for specific fields
+      // Specific field handling
       if (key.toLowerCase().includes("location") && typeof value === "string") {
-        const coordinates = value.split(','); // Assuming value is in "latitude,longitude" format
+        const coordinates = value.split(',');
         if (coordinates.length === 2) {
           const latitude = coordinates[0].trim();
           const longitude = coordinates[1].trim();
@@ -104,7 +104,7 @@ function ViewTrip() {
       }
 
       if (key.toLowerCase().includes("imageURL")) {
-        const placeholderImage = "https://via.placeholder.com/150"; // Placeholder image URL
+        const placeholderImage = "https://via.placeholder.com/150";
         return (
           <div key={key} className="flex items-start py-2">
             <span className="font-medium text-gray-600 mr-4">{key.replace(/([A-Z])/g, ' $1')}:</span>
@@ -118,11 +118,21 @@ function ViewTrip() {
 
       return (
         <div key={key} className="flex items-start py-2">
-          {key.toLowerCase().includes("hotel") && <FaHotel className="mr-2 text-blue-500" />}
+          {key.toLowerCase().includes("hotel") && (
+            <div className="flex items-center gap-4 bg-blue-100 p-4 rounded-lg shadow-md w-full">
+              <FaHotel className="text-blue-500" />
+              <span className="font-medium text-gray-700">{key.replace(/([A-Z])/g, ' $1')}:</span>
+              <span className="text-gray-800">{value}</span>
+            </div>
+          )}
           {key.toLowerCase().includes("date") && <FaCalendarAlt className="mr-2 text-green-500" />}
           {key.toLowerCase().includes("time") && <FaClock className="mr-2 text-purple-500" />}
-          <span className="font-medium text-gray-600 mr-4">{key.replace(/([A-Z])/g, ' $1')}:</span>
-          <span className="text-gray-800 break-words">{value}</span>
+          {!key.toLowerCase().includes("hotel") && (
+            <>
+              <span className="font-medium text-gray-600 mr-4">{key.replace(/([A-Z])/g, ' $1')}:</span>
+              <span className="text-gray-800 break-words">{value}</span>
+            </>
+          )}
         </div>
       );
     }
@@ -132,7 +142,9 @@ function ViewTrip() {
     <div>
       <Headerdarknext />
       <div className="p-8 bg-[#111827] min-h-screen">
-        <h1 className="text-3xl text-white font-bold mb-6">Travel Plan for Trip ID: {tripID}</h1>
+        <h1 className="text-3xl text-white font-bold mb-6">
+           Travel Plan for Trip {/*ID: {tripID} */}
+        </h1>
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : travelPlan ? (
