@@ -38,7 +38,6 @@ function DashboardCard({ href, borderColor, title, description }) {
 export default async function Herodash() {
   const user = await currentUser();
   const username = user?.username || 'Guest';
-
   return (
     <div>
       <section className="bg-gray-900 text-white">
