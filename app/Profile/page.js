@@ -1,4 +1,3 @@
-// pages/profile.js
 "use client";
 
 import { useUser } from "@clerk/nextjs";
@@ -58,7 +57,14 @@ export default function ProfilePage() {
     if (!newInterest.trim()) return;
 
     const docRef = doc(db, "userProfiles", user.id);
-    await updateDoc(docRef, { interests: arrayUnion(newInterest) });
+    
+    // Add the new interest along with the username
+    const updatedInterests = {
+      interests: arrayUnion(newInterest),
+      username: user.username  // Save the username along with the interest
+    };
+
+    await updateDoc(docRef, updatedInterests);
     setInterests((prev) => [...prev, newInterest]);
     setNewInterest("");
     setFilteredInterests([]);
