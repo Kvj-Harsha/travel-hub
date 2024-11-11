@@ -38,7 +38,6 @@ function DashboardCard({ href, borderColor, title, description }) {
 export default async function Herodash() {
   const user = await currentUser();
   const username = user?.username || 'Guest';
-
   return (
     <div>
       <section className="bg-gray-900 text-white">
@@ -50,7 +49,7 @@ export default async function Herodash() {
             </h1>
 
             <p className="mx-auto mt-4 max-w-xl sm:text-xl/relaxed">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt illo tenetur fuga ducimus numquam ea!
+              Explore the three features!
             </p>
               <Finalcard/>
           </div>

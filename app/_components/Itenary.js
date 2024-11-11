@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaHotel, FaCar, FaDollarSign, FaCalendarAlt } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import { chatSession } from "../service/AIModal";
 import Link from "next/link";  // Import Link for navigation
+
+import { useUser } from "@clerk/nextjs";  // Assuming client-side usage
 
 // Firebase configuration
 const firebaseConfig = {
@@ -20,17 +22,19 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export default function Itinerary() {
+  const { user } = useUser();
+  const username = user?.username || 'Guest';
   const [tripData, setTripData] = useState({
-    destinations: "",
-    days: 1,
-    travelers: 1,
+    source: "",
+    destination: "",
+    days: "",
+    travelers: "",
     accommodation: "",
     transport: "",
-    activities: "",
-    cuisine: "",
-    additionalNotes: "",
-    budget: 500,
-    tripID: "" // Add tripID to the state
+    tripType: "", // Add tripType to the state
+    budget: "",
+    tripID: "",
+    UserName: username // Add UserName to the state
   });
   const [submittedData, setSubmittedData] = useState(null);
   const [travelPlan, setTravelPlan] = useState(null);
@@ -47,7 +51,7 @@ export default function Itinerary() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!tripData.destinations || !tripData.days || !tripData.travelers) {
+    if (!tripData.destination || !tripData.days || !tripData.travelers) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -73,22 +77,19 @@ export default function Itinerary() {
 
   const generateTravelPlan = async (docId) => {
     const FINAL_PROMPT = `
-      Generate a travel plan for a trip to "${tripData.destinations}" with ${tripData.days} days and ${tripData.travelers} traveler(s). 
+      Generate a travel plan for a "${tripData.tripType}" trip from "${tripData.source}" to "${tripData.destination}" with ${tripData.days} days and ${tripData.travelers} traveler(s). 
       Accommodation preference is "${tripData.accommodation}" and preferred mode of transportation is "${tripData.transport}". 
-      The budget for the trip is ${tripData.budget} USD. Provide a list of hotel options including HotelName, HotelAddress, Price, 
+      The budget for the trip is ${tripData.budget} INR. Provide a list of hotel options including HotelName, HotelAddress, Price, 
       HotelImageURL, GeoCoordinates, Rating, and Description. Additionally, create a daily itinerary that includes place names, details, 
       images, geo-coordinates, ticket pricing, travel time between locations, and recommended visit times for each of the ${tripData.days} days in JSON format.
     `;
 
     try {
       const result = await chatSession.sendMessage(FINAL_PROMPT);
-      const responseText = await result?.response?.text();
+      const responseText = result?.response?.text();
       setTravelPlan(responseText);
 
-      // Parse the JSON response (assuming responseText is in JSON format)
       const travelPlanData = JSON.parse(responseText);
-
-      // Update the Firestore document with the generated travel plan
       const itineraryDocRef = doc(db, "itineraries", docId);
       await updateDoc(itineraryDocRef, { travelPlan: travelPlanData });
 
@@ -107,36 +108,103 @@ export default function Itinerary() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <h2 className="text-lg font-semibold">Trip Details</h2>
 
-          {[
-            { icon: FaHotel, type: "text", name: "destinations", placeholder: "Destinations", required: true },
-            { icon: FaCalendarAlt, type: "number", name: "days", placeholder: "Number of Days", min: 1, required: true },
-            { icon: FaCar, type: "number", name: "travelers", placeholder: "Number of Travelers", min: 1, required: true },
-            { icon: FaHotel, type: "text", name: "accommodation", placeholder: "Accommodation Preference" },
-            { icon: FaCar, type: "text", name: "transport", placeholder: "Preferred Transport" },
-            { icon: FaCalendarAlt, type: "text", name: "activities", placeholder: "Activities" },
-            { icon: FaCalendarAlt, type: "text", name: "cuisine", placeholder: "Cuisine Preferences" },
-            { icon: FaCalendarAlt, type: "textarea", name: "additionalNotes", placeholder: "Additional Notes" },
-            { icon: FaDollarSign, type: "number", name: "budget", placeholder: "Budget (USD)", min: 0 },
-          ].map(({ icon: Icon, ...inputProps }, index) => (
+          {[{
+            icon: FaHotel,
+            type: "text",
+            name: "source",
+            placeholder: "Source",
+            required: true
+          }, {
+            icon: FaHotel,
+            type: "text",
+            name: "destination",
+            placeholder: "Destination",
+            required: true
+          }, {
+            icon: FaCalendarAlt,
+            type: "number",
+            name: "days",
+            placeholder: "Number of Days",
+            min: 1,
+            required: true
+          }, {
+            icon: FaCar,
+            type: "number",
+            name: "travelers",
+            placeholder: "Number of Travelers",
+            min: 1,
+            required: true
+          }, {
+            icon: FaDollarSign,
+            type: "number",
+            name: "budget",
+            placeholder: "Budget (INR)",
+            min: 0
+          }].map(({ icon: Icon, ...inputProps }, index) => (
             <div key={index} className="flex items-center space-x-3">
               <Icon className="text-blue-500" />
-              {inputProps.type === "textarea" ? (
-                <textarea
-                  {...inputProps}
-                  value={tripData[inputProps.name]}
-                  onChange={handleInputChange}
-                  className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-                />
-              ) : (
-                <input
-                  {...inputProps}
-                  value={tripData[inputProps.name]}
-                  onChange={handleInputChange}
-                  className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
-                />
-              )}
+              <input
+                {...inputProps}
+                value={tripData[inputProps.name]}
+                onChange={handleInputChange}
+                className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
+              />
             </div>
           ))}
+
+          {/* Accommodation preference dropdown */}
+          <div className="flex items-center space-x-3">
+            <FaHotel className="text-blue-500" />
+            <select
+              name="accommodation"
+              value={tripData.accommodation}
+              onChange={handleInputChange}
+              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
+              required
+            >
+              <option value="">Select Accommodation Preference</option>
+              <option value="Hotel">Hotel</option>
+              <option value="Resort">Resort</option>
+              <option value="Airbnb">Airbnb</option>
+              <option value="Homestay">Homestay</option>
+            </select>
+          </div>
+
+          {/* Preferred transport dropdown */}
+          <div className="flex items-center space-x-3">
+            <FaCar className="text-blue-500" />
+            <select
+              name="transport"
+              value={tripData.transport}
+              onChange={handleInputChange}
+              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
+              required
+            >
+              <option value="">Select Preferred Transport</option>
+              <option value="Train">Train</option>
+              <option value="Bus">Bus</option>
+              <option value="Car">Car</option>
+              <option value="Aeroplane">Aeroplane</option>
+            </select>
+          </div>
+
+          {/* Trip type dropdown */}
+          <div className="flex items-center space-x-3">
+            <FaCalendarAlt className="text-blue-500" />
+            <select
+              name="tripType"
+              value={tripData.tripType}
+              onChange={handleInputChange}
+              className="w-full border rounded-lg p-3 focus:ring focus:ring-blue-200"
+              required
+            >
+              <option value="">Select Trip Type</option>
+              <option value="Single">Single</option>
+              <option value="Couple">Couple</option>
+              <option value="Friends">Friends</option>
+              <option value="Family">Family</option>
+            </select>
+          </div>
 
           <button
             type="submit"
@@ -161,14 +229,8 @@ export default function Itinerary() {
 
         {travelPlan && (
           <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-            <h2 className="text-lg font-semibold">Generated Travel Plan</h2>
-            {/* <pre className="text-sm text-gray-700 whitespace-pre-wrap mt-2">{JSON.stringify(travelPlan, null, 2)}</pre> */}
-
-            <Link href={`/view-trip/${submittedData.tripID }`}>
-              <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-                View Plan
-              </button>
-            </Link>
+            <h2 className="text-lg font-semibold">Travel Plan</h2>
+            <pre className="text-sm text-gray-700 mt-2">{travelPlan}</pre>
           </div>
         )}
       </div>
