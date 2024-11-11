@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
@@ -18,11 +18,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Predefined Interests List
+const predefinedInterests = [
+  "Cycling", "Biking", "Hiking", "Camping", "Travel Vlogging",
+  "Backpacking", "Road Trip", "Motor Vlogging", "Photography", "Nature Walks",
+  "Mountain Climbing", "Beach Holidays", "Adventure Sports", "Fishing", "Snorkeling",
+  "Skydiving", "Paragliding", "Train Traveling", "Cruise Trips", "Cultural Exploration",
+  "Wildlife Safari", "Volunteering Abroad", "Food Tourism", "Historical Sites", "City Tours",
+  "Luxury Travel", "Eco-Tourism", "Solo Travel", "Group Tours", "Backpacking Across Europe"
+];
+
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [profiles, setProfiles] = useState([]);
+  const [filteredInterests, setFilteredInterests] = useState([]);
 
   // Fetch all profiles from Firestore
   const fetchProfiles = async () => {
@@ -55,8 +66,18 @@ export default function SearchPage() {
     setSearchResults(results);
   };
 
+  const handleInterestInputChange = (e) => {
+    setSearchTerm(e.target.value);
+
+    // Filter predefined interests based on search term
+    const filtered = predefinedInterests.filter((interest) =>
+      interest.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredInterests(filtered);
+  };
+
   // Run fetchProfiles when component mounts
-  useState(() => {
+  useEffect(() => {
     fetchProfiles();
   }, []);
 
@@ -69,9 +90,28 @@ export default function SearchPage() {
           type="text"
           placeholder="Search by username or interest..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleInterestInputChange}
           className="border rounded-md p-2 w-full mb-4"
         />
+        {filteredInterests.length > 0 && (
+          <div className="bg-white shadow-md rounded-lg mt-2 max-h-48 overflow-auto">
+            <ul>
+              {filteredInterests.map((interest, index) => (
+                <li
+                  key={index}
+                  onClick={() => {
+                    setSearchTerm(interest);
+                    setFilteredInterests([]);
+                    handleSearch();  // Trigger search when a predefined interest is selected
+                  }}
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                >
+                  {interest}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <button
           onClick={handleSearch}
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full"
