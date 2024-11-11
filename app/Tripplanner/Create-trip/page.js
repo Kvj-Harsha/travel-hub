@@ -8,7 +8,7 @@ function page() {
     <div>
       <Headerdarknext/>
       <Itenary/>
-
+      
     </div>
   )
 }

@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaHotel, FaCar, FaDollarSign, FaCalendarAlt, FaPlane, FaRupeeSign } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import { chatSession } from "../service/AIModal";
-import Link from "next/link";  // Import Link for navigation
+import Link from "next/link";
 
-import { useUser } from "@clerk/nextjs";  // Assuming client-side usage
+import { useUser } from "@clerk/nextjs";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -221,10 +221,14 @@ export default function Itinerary() {
           </div>
         )}
 
+        {/* Conditionally render View Trip button after travelPlan is available */}
         {travelPlan && (
-          <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-            <h2 className="text-lg font-semibold">Travel Plan</h2>
-            <pre className="text-sm text-gray-700 mt-2">{JSON.stringify(travelPlan, null, 2)}</pre>
+          <div className="flex gap-4 mt-6 w-full">
+            <Link href={`/view-trip/${docId}`} passHref>
+              <button className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg transition hover:bg-blue-600">
+                View Trip
+              </button>
+            </Link>
           </div>
         )}
       </div>
