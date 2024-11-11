@@ -52,14 +52,21 @@ export default function SearchPage() {
     if (!searchTerm.trim()) return;
 
     const results = profiles.filter((profile) => {
+      // Normalize searchTerm to lowercase for case-insensitive search
+      const normalizedSearchTerm = searchTerm.toLowerCase();
+
+      // Check for username match (case-insensitive)
       const usernameMatch = profile.username
-        ? profile.username.toLowerCase().includes(searchTerm.toLowerCase())
+        ? profile.username.toLowerCase().includes(normalizedSearchTerm)
         : false;
+
+      // Check for interest match (case-insensitive)
       const interestsMatch = profile.interests
         ? profile.interests.some((interest) =>
-            interest.toLowerCase().includes(searchTerm.toLowerCase())
+            interest.toLowerCase().includes(normalizedSearchTerm)
           )
         : false;
+
       return usernameMatch || interestsMatch;
     });
 
