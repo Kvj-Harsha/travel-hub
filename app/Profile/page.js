@@ -2,8 +2,21 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import {
+  initializeApp,
+  getApps,
+} from "firebase/app";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -12,12 +25,14 @@ const firebaseConfig = {
   projectId: "travelhub-1",
   storageBucket: "travelhub-1.appspot.com",
   messagingSenderId: "961577383911",
-  appId: "1:961577383911:web:b0afb4df1d9e79a6c9af42"
+  appId: "1:961577383911:web:b0afb4df1d9e79a6c9af42",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Initialize Firebase (only once)
+if (!getApps().length) {
+  initializeApp(firebaseConfig);
+}
+const db = getFirestore();
 
 // Predefined Interests List
 const predefinedInterests = [
@@ -34,47 +49,9 @@ export default function ProfilePage() {
   const [interests, setInterests] = useState([]);
   const [newInterest, setNewInterest] = useState("");
   const [filteredInterests, setFilteredInterests] = useState([]);
+  const [allProfiles, setAllProfiles] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editInterest, setEditInterest] = useState("");
-
-  useEffect(() => {
-    if (user) {
-      const fetchInterests = async () => {
-        const docRef = doc(db, "userProfiles", user.id);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setInterests(docSnap.data().interests || []);
-        } else {
-          await setDoc(docRef, { interests: [] });
-        }
-      };
-      fetchInterests();
-    }
-  }, [user]);
-
-  const addInterest = async () => {
-    if (!newInterest.trim()) return;
-
-    const docRef = doc(db, "userProfiles", user.id);
-    
-    // Add the new interest along with the username
-    const updatedInterests = {
-      interests: arrayUnion(newInterest),
-      username: user.username  // Save the username along with the interest
-    };
-
-    await updateDoc(docRef, updatedInterests);
-    setInterests((prev) => [...prev, newInterest]);
-    setNewInterest("");
-    setFilteredInterests([]);
-  };
-
-  const deleteInterest = async (interest) => {
-    const docRef = doc(db, "userProfiles", user.id);
-    await updateDoc(docRef, { interests: arrayRemove(interest) });
-    setInterests((prev) => prev.filter((item) => item !== interest));
-  };
 
   const startEditing = (index, interest) => {
     setEditingIndex(index);
@@ -88,10 +65,64 @@ export default function ProfilePage() {
     const updatedInterests = [...interests];
     updatedInterests[editingIndex] = editInterest;
 
-    await setDoc(docRef, { interests: updatedInterests });
+    await setDoc(docRef, { interests: updatedInterests, username: user.username });
     setInterests(updatedInterests);
     setEditingIndex(null);
     setEditInterest("");
+  };
+
+  // Fetch user-specific interests
+  useEffect(() => {
+    if (user) {
+      const fetchInterests = async () => {
+        const docRef = doc(db, "userProfiles", user.id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setInterests(docSnap.data().interests || []);
+        } else {
+          // Create a new profile if it doesn't exist
+          await setDoc(docRef, { interests: [], username: user.username });
+        }
+      };
+      fetchInterests();
+    }
+  }, [user]);
+
+  // Fetch all user profiles
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      const querySnapshot = await getDocs(collection(db, "userProfiles"));
+      const profiles = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setAllProfiles(profiles);
+    };
+    fetchProfiles();
+  }, []);
+
+  const addInterest = async () => {
+    if (!newInterest.trim()) return;
+
+    const docRef = doc(db, "userProfiles", user.id);
+
+    // Update the document to add a new interest and ensure username is included
+    await updateDoc(docRef, {
+      interests: arrayUnion(newInterest),
+      username: user.username,
+    });
+
+    // Update local state
+    setInterests((prev) => [...prev, newInterest]);
+    setNewInterest(""); // Clear the input
+    setFilteredInterests([]); // Clear filtered interests
+  };
+
+  const deleteInterest = async (interest) => {
+    const docRef = doc(db, "userProfiles", user.id);
+    await updateDoc(docRef, { interests: arrayRemove(interest) });
+    setInterests((prev) => prev.filter((item) => item !== interest));
   };
 
   const handleInterestInputChange = (e) => {
@@ -107,98 +138,131 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-4">Profile</h1>
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-2">Hello, {user.fullName}</h2>
-        <p className="text-lg mb-4">
-          <strong>Email:</strong> {user.primaryEmailAddress?.emailAddress}
-        </p>
+    <div className="min-h-screen bg-[#111827] p-8 text-gray-300">
+      {/* Profile Section */}
+      <div className="flex flex-col items-center">
+        <h1 className="text-4xl font-bold mb-6 text-white">Your Profile</h1>
+        <div className="bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-lg">
+          <h2 className="text-2xl font-semibold mb-4 text-white">Hello, {user.fullName}</h2>
+          <p className="text-lg mb-6">
+            <strong>Email:</strong> {user.primaryEmailAddress?.emailAddress}
+          </p>
 
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold mb-2">Your Interests</h3>
-          <ul className="list-disc pl-6 mb-4 space-y-2">
+          {/* Interests */}
+          <h3 className="text-xl font-semibold mb-4 text-gray-200">Your Interests</h3>
+          <ul className="space-y-3">
             {interests.length ? (
               interests.map((interest, index) => (
-                <li key={index} className="text-gray-700 flex items-center">
+                <li
+                  key={index}
+                  className="flex justify-between items-center bg-gray-700 p-3 rounded-lg"
+                >
                   {editingIndex === index ? (
-                    <>
+                    <div className="flex items-center space-x-2 w-full">
                       <input
                         type="text"
                         value={editInterest}
                         onChange={(e) => setEditInterest(e.target.value)}
-                        className="border rounded-md p-2 mr-2"
+                        className="flex-grow border-gray-600 bg-gray-900 text-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-500"
                       />
                       <button
                         onClick={saveEdit}
-                        className="bg-green-500 text-white px-2 py-1 rounded-md mr-2 hover:bg-green-600"
+                        className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => setEditingIndex(null)}
-                        className="bg-gray-500 text-white px-2 py-1 rounded-md hover:bg-gray-600"
+                        className="bg-gray-500 text-white px-3 py-1 rounded-lg hover:bg-gray-600"
                       >
                         Cancel
                       </button>
-                    </>
+                    </div>
                   ) : (
-                    <>
+                    <div className="flex items-center justify-between w-full">
                       <span>{interest}</span>
-                      <button
-                        onClick={() => startEditing(index, interest)}
-                        className="bg-blue-500 text-white px-2 py-1 rounded-md ml-2 hover:bg-blue-600"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => deleteInterest(interest)}
-                        className="bg-red-500 text-white px-2 py-1 rounded-md ml-2 hover:bg-red-600"
-                      >
-                        Delete
-                      </button>
-                    </>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => startEditing(index, interest)}
+                          className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deleteInterest(interest)}
+                          className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </li>
               ))
             ) : (
-              <p className="text-gray-500">No interests added yet.</p>
+              <p className="text-gray-400">No interests added yet.</p>
             )}
           </ul>
 
-          <input
-            type="text"
-            placeholder="Search and add a new interest"
-            className="border rounded-md p-2 w-full mb-2"
-            value={newInterest}
-            onChange={handleInterestInputChange}
-          />
+          <div className="mt-6">
+            <input
+              type="text"
+              placeholder="Add a new interest"
+              className="border-gray-600 bg-gray-900 text-gray-300 p-3 w-full rounded-lg mb-3 focus:ring focus:ring-blue-500"
+              value={newInterest}
+              onChange={handleInterestInputChange}
+            />
+            {filteredInterests.length > 0 && (
+              <div className="bg-gray-700 p-4 rounded-lg max-h-48 overflow-auto">
+                <ul>
+                  {filteredInterests.map((interest, index) => (
+                    <li
+                      key={index}
+                      onClick={() => {
+                        setNewInterest(interest);
+                        setFilteredInterests([]);
+                      }}
+                      className="cursor-pointer p-2 hover:bg-gray-600 rounded-md"
+                    >
+                      {interest}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <button
+              onClick={addInterest}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full mt-3 hover:bg-blue-600"
+            >
+              Add Interest
+            </button>
+          </div>
+        </div>
+      </div>
 
-          {filteredInterests.length > 0 && (
-            <div className="bg-white shadow-md rounded-lg mt-2 max-h-48 overflow-auto">
-              <ul>
-                {filteredInterests.map((interest, index) => (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      setNewInterest(interest);
-                      setFilteredInterests([]);
-                    }}
-                    className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                  >
+      {/* All Profiles Section */}
+      <div className="mt-16">
+        <h2 className="text-3xl font-bold text-white text-center mb-8">All Profiles</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {allProfiles.map((profile) => (
+            <div
+              key={profile.id}
+              className="bg-gray-800 shadow-lg rounded-lg p-6"
+            >
+              <h3 className="text-xl font-bold mb-2 text-gray-200">{profile.username}</h3>
+              <p className="text-gray-400 mb-4">Interests:</p>
+              <ul className="list-disc ml-5">
+                {profile.interests.map((interest, index) => (
+                  <li key={index} className="text-gray-300">
                     {interest}
                   </li>
                 ))}
               </ul>
+              <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                Connect
+              </button>
             </div>
-          )}
-
-          <button
-            onClick={addInterest}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full mt-2"
-          >
-            Add Interest
-          </button>
+          ))}
         </div>
       </div>
     </div>

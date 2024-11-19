@@ -103,18 +103,21 @@ export default function ProfilePage() {
 
   const addInterest = async () => {
     if (!newInterest.trim()) return;
-
+  
     const docRef = doc(db, "userProfiles", user.id);
-
-    // Add the new interest
+  
+    // Update the document to add a new interest and update the username field
     await updateDoc(docRef, {
       interests: arrayUnion(newInterest),
+      username: user.username, // Ensure the username is updated every time
     });
+  
+    // Update local state for interests
     setInterests((prev) => [...prev, newInterest]);
-    setNewInterest("");
-    setFilteredInterests([]);
+    setNewInterest(""); // Clear the input field
+    setFilteredInterests([]); // Clear filtered interests
   };
-
+  
   const deleteInterest = async (interest) => {
     const docRef = doc(db, "userProfiles", user.id);
     await updateDoc(docRef, { interests: arrayRemove(interest) });
