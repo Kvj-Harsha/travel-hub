@@ -1,11 +1,8 @@
 "use client";
-
+import Headerdarknext from '../_components/Headerdarknxt'
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import {
-  initializeApp,
-  getApps,
-} from "firebase/app";
+import { initializeApp, getApps,} from "firebase/app";
 import {
   getFirestore,
   doc,
@@ -137,6 +134,8 @@ export default function ProfilePage() {
   }
 
   return (
+    <div>
+      <Headerdarknext/>
     <div className="min-h-screen bg-[#111827] p-8 text-gray-300">
       {/* Profile Section */}
       <div className="flex flex-col items-center">
@@ -156,7 +155,7 @@ export default function ProfilePage() {
       <li
         key={index}
         className="flex justify-between items-center bg-gray-700 p-3 rounded-lg"
-      >
+        >
         {editingIndex === index ? (
           <div className="flex items-center space-x-2 w-full">
             <input
@@ -164,11 +163,11 @@ export default function ProfilePage() {
               value={editInterest}
               onChange={(e) => setEditInterest(e.target.value)}
               className="flex-grow border-gray-600 bg-gray-900 text-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-500"
-            />
+              />
             <button
               onClick={saveEdit}
               className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600"
-            >
+              >
               Save
             </button>
             <button
@@ -185,13 +184,13 @@ export default function ProfilePage() {
               <button
                 onClick={() => startEditing(index, interest)}
                 className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
-              >
+                >
                 Edit
               </button>
               <button
                 onClick={() => deleteInterest(interest)}
                 className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
-              >
+                >
                 Delete
               </button>
             </div>
@@ -252,7 +251,7 @@ export default function ProfilePage() {
     <div
       key={profile.id}
       className="bg-gray-800 shadow-lg rounded-lg p-6 flex flex-col items-center text-center"
-    >
+      >
       {/* User Avatar Icon */}
       <div className="bg-blue-500 w-16 h-16 flex items-center justify-center rounded-full mb-4">
         <svg
@@ -284,9 +283,9 @@ export default function ProfilePage() {
         {profile.interests?.length > 0 ? (
           profile.interests.map((interest, index) => (
             <li
-              key={index}
+            key={index}
               className="flex items-center bg-gray-700 p-2 rounded-lg"
-            >
+              >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-blue-500 mr-3"
@@ -299,7 +298,7 @@ export default function ProfilePage() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   d="M5 13l4 4L19 7"
-                />
+                  />
               </svg>
               {interest}
             </li>
@@ -318,7 +317,7 @@ export default function ProfilePage() {
           });
         }}
         className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-600"
-      >
+        >
         Connect
       </button>
     </div>
@@ -328,5 +327,6 @@ export default function ProfilePage() {
         
       </div>
     </div>
+  </div>
   );
 }
