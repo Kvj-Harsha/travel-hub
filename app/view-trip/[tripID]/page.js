@@ -33,15 +33,6 @@ function ViewTrip() {
 
         if (docSnap.exists()) {
           const data = docSnap.data();
-
-          // Sort itinerary by day number if it exists and is an array
-          if (data.travelPlan && Array.isArray(data.travelPlan.itinerary)) {
-            data.travelPlan.itinerary.sort((a, b) => {
-              const dayA = parseInt(a.day.replace(/\D/g, ""), 10); // Extract numeric part only
-              const dayB = parseInt(b.day.replace(/\D/g, ""), 10);
-              return dayA - dayB; // Sort numerically by day
-            });
-          }
           setTravelPlan(data.travelPlan);
         } else {
           setError("No travel plan found.");
@@ -138,13 +129,27 @@ function ViewTrip() {
     }
   };
 
+  const renderItinerary = (itinerary) => {
+    const orderedItinerary = Object.entries(itinerary)
+      .sort(([keyA], [keyB]) => {
+        const dayA = parseInt(keyA.replace(/\D/g, ""), 10);
+        const dayB = parseInt(keyB.replace(/\D/g, ""), 10);
+        return dayA - dayB;
+      });
+
+    return orderedItinerary.map(([dayKey, dayValue]) => (
+      <div key={dayKey} className="bg-gray-50 p-4 rounded-lg shadow-md mb-4">
+        <h3 className="text-xl font-semibold text-gray-700 mb-2">{dayKey.replace(/([A-Z])/g, ' $1')}</h3>
+        {Object.entries(dayValue).map(([key, value]) => renderField(key, value))}
+      </div>
+    ));
+  };
+
   return (
     <div>
       <Headerdarknext />
       <div className="p-8 bg-[#111827] min-h-screen">
-        <h1 className="text-3xl text-white font-bold mb-6">
-           Travel Plan for Trip {/*ID: {tripID} */}
-        </h1>
+        <h1 className="text-3xl text-white font-bold mb-6">Travel Plan for Trip</h1>
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : travelPlan ? (
@@ -153,7 +158,7 @@ function ViewTrip() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {Object.entries(travelPlan).map(([key, value]) => (
                 <div key={key} className="bg-gray-50 p-6 rounded-lg shadow-md">
-                  {renderField(key, value)}
+                  {key === "itinerary" ? renderItinerary(value) : renderField(key, value)}
                 </div>
               ))}
             </div>
