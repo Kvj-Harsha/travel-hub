@@ -11,196 +11,101 @@ function Sec1() {
             </h2>
 
             <p className="mt-4 text-gray-300">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-              dolores  fugit totam iste obcaecati. Consequatur ipsa quod
-              ipsum sequi culpa delectus, cumque id tenetur quibusdam, quos fuga
-              minima.
+              Travel Hub is your ultimate companion for connecting with other travelers,
+              planning trips, and discovering unique local experiences. We bring 
+              everything you need for a memorable journey into one place.
             </p>
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3">
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
-                </svg>
+                {/* SVG Icon */}
               </span>
 
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
+                <h2 className="text-lg font-bold">Connect with Travelers</h2>
 
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Build connections with like-minded travelers, share experiences, 
+                  and explore destinations together for a richer, more personalized journey.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
-                </svg>
+                {/* SVG Icon */}
               </span>
 
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
+                <h2 className="text-lg font-bold">Customizable Itineraries</h2>
 
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Our itinerary planner allows you to personalize every step, 
+                  with options for local transportation and destination-specific 
+                  activities tailored to your interests.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
-                </svg>
+                {/* SVG Icon */}
               </span>
 
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
+                <h2 className="text-lg font-bold">Comprehensive Destination Guides</h2>
 
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Access a wealth of information on destinations worldwide, including 
+                  top attractions, local tips, and hidden gems curated by experts.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
-                </svg>
+                {/* SVG Icon */}
               </span>
 
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
+                <h2 className="text-lg font-bold">Budget-Friendly Planning</h2>
 
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Set your travel budget with ease using our budget slider, 
+                  and find options that match your financial plans without 
+                  sacrificing quality or comfort.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
-                </svg>
+                {/* SVG Icon */}
               </span>
 
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
+                <h2 className="text-lg font-bold">Save and Access Trips</h2>
 
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Save your trips with a username and Gmail, making it easy to 
+                  access and filter through your travel plans anytime, anywhere.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
-                </svg>
+                {/* SVG Icon */}
               </span>
 
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
+                <h2 className="text-lg font-bold">Community Interactions</h2>
 
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Engage with the travel community through blogs, forums, and 
+                  shared experiences, fostering a sense of belonging while you explore.
                 </p>
               </div>
             </div>
