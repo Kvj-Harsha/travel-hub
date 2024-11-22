@@ -10,7 +10,7 @@ function page() {
      <Header />
       <Hero />
       <Sec1 />
-      <Sec2/> 
+      {/* <Sec2/>  */}
     </div>
   );
 }
