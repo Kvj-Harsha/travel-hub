@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -27,5 +28,24 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [addVariablesForColors],
 };
+
+function addVariablesForColors({ addBase, theme }) {
+  const colors = theme("colors");
+  const flattenColors = (obj, prefix = '') =>
+    Object.entries(obj).reduce((acc, [key, value]) => {
+      if (typeof value === 'object' && value !== null) {
+        Object.assign(acc, flattenColors(value, `${prefix}${key}-`));
+      } else {
+        acc[`--${prefix}${key}`] = value;
+      }
+      return acc;
+    }, {});
+
+  const newVars = flattenColors(colors);
+
+  addBase({
+    ":root": newVars,
+  });
+}
