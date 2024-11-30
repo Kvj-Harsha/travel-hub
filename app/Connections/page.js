@@ -1,5 +1,5 @@
 "use client";
-import Headerdarknext from '../_components/Headerdarknxt'
+import Headerdarknext2 from '../_components/Headerdarknxt2';
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { initializeApp, getApps,} from "firebase/app";
@@ -135,7 +135,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <Headerdarknext/>
+      <Headerdarknext2/>
     <div className="min-h-screen bg-[#111827] p-8 text-gray-300">
       {/* Profile Section */}
       <div className="flex flex-col items-center">

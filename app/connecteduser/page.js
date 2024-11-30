@@ -1,5 +1,5 @@
 "use client";
-
+import Headerdarknext2 from '../_components/Headerdarknxt2';
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import {
@@ -140,7 +140,9 @@ export default function ConnectedUsers() {
   }
 
   return (
-    <div className="min-h-screen bg-[#111827] p-8 text-gray-300">
+   <div>
+    <Headerdarknext2/>
+   <div className="min-h-screen bg-[#111827] p-8 text-gray-300">
       <h1 className="text-4xl font-bold text-white mb-6 text-center">
         Your Connections
       </h1>
@@ -208,6 +210,7 @@ export default function ConnectedUsers() {
           <p className="text-gray-400">No connection requests.</p>
         )}
       </div>
+    </div>
     </div>
   );
 }
