@@ -50,7 +50,7 @@ function Procard() {
     {
       name: "N S Murthy",
       description: "A front-end developer with a focus on modern JavaScript frameworks and responsive design.",
-      imageUrl: "/1.jpg",  // Replace with actual image URL
+      imageUrl: "/pspk.jpg",  // Replace with actual image URL
       socialLinks: {
         github: "https://github.com/johndoe",
         linkedin: "https://linkedin.com/in/johndoe",
