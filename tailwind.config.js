@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,6 +14,7 @@ module.exports = {
       animation: {
         'fade-in-down': 'fadeInDown 0.5s ease-out',
         'scale-up': 'scaleUp 0.3s ease-in-out',
+        'marquee': 'marquee 10s linear infinite',  // Added marquee animation
       },
       keyframes: {
         fadeInDown: {
@@ -24,6 +24,14 @@ module.exports = {
         scaleUp: {
           '0%': { transform: 'scale(1)' },
           '100%': { transform: 'scale(1.05)' },
+        },
+        marquee: {
+          '0%': {
+            transform: 'translateX(100%)',
+          },
+          '100%': {
+            transform: 'translateX(-100%)',
+          },
         },
       },
     },

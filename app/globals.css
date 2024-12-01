@@ -27,3 +27,9 @@
   background-color: #111827;
 }
 
+@layer utilities {
+  .neon-text {
+    text-shadow: 0 0 5px #00c0ff, 0 0 10px #00c0ff, 0 0 15px #00c0ff, 0 0 20px #00c0ff, 0 0 30px #00c0ff;
+    transition: text-shadow 1s ease-in-out; /* Smooth transition */
+  }
+}
