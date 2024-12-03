@@ -11,199 +11,102 @@ function Sec1() {
             </h2>
 
             <p className="mt-4 text-gray-300">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-              dolores iure fugit totam iste obcaecati. Consequatur ipsa quod
-              ipsum sequi culpa delectus, cumque id tenetur quibusdam, quos fuga
-              minima.
+              Discover why Travel Hub is the ultimate companion for every traveler. We bring together unique features tailored to create unforgettable journeys.
             </p>
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-3">
+            
+            {/* Travel Connections */}
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12h2.586l-3.293 3.293a1 1 0 001.414 1.414l4.707-4.707a1 1 0 000-1.414l-4.707-4.707a1 1 0 00-1.414 1.414L17.586 10H15a1 1 0 000 2z"></path>
                 </svg>
               </span>
-
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
-
+                <h2 className="text-lg font-bold">Travel Connections</h2>
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Connect with fellow travelers based on shared interests and destinations.
                 </p>
               </div>
             </div>
 
+            {/* Trip Planner */}
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 13v6a2 2 0 002 2h3v2H2V2h4.586A1.992 1.992 0 019 3.414L12.586 7H17v6z"></path>
                 </svg>
               </span>
-
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
-
+                <h2 className="text-lg font-bold">Trip Planner</h2>
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Customize and plan your itinerary with local and long-distance travel options.
                 </p>
               </div>
             </div>
 
+            {/* Destination Guides */}
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 8l-9-4-9 4v6a9.006 9.006 0 0012.585 8.029"></path>
                 </svg>
               </span>
-
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
-
+                <h2 className="text-lg font-bold">Destination Guides</h2>
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Access detailed guides, local tips, and must-see spots for each destination.
                 </p>
               </div>
             </div>
 
+            {/* Blogs and Travel Stories */}
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 11v4h4m4 0v-4h-4m2-10h5a2 2 0 012 2v11h1a2 2 0 002 2H5a2 2 0 01-2-2V4a2 2 0 012-2h5m3 0v2m0 16v2"></path>
                 </svg>
               </span>
-
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
-
+                <h2 className="text-lg font-bold">Blogs and Travel Stories</h2>
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Share and read travel experiences to inspire your next adventure.
                 </p>
               </div>
             </div>
 
+            {/* Local Experiences */}
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12l4 4v11a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"></path>
                 </svg>
               </span>
-
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
-
+                <h2 className="text-lg font-bold">Local Experiences</h2>
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Discover and book unique local activities to enrich your travel experience.
                 </p>
               </div>
             </div>
 
+            {/* Personalized Itineraries */}
             <div className="flex items-start gap-4">
               <span className="shrink-0 rounded-lg bg-gray-800 p-4">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  ></path>
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7V3a1 1 0 011-1h2a1 1 0 011 1v4m0 0h-6M8 5v6h8m-4-1a2 2 0 11-4 0m0 0a2 2 0 114 0M2 17h18"></path>
                 </svg>
               </span>
-
               <div>
-                <h2 className="text-lg font-bold">Lorem, ipsum dolor.</h2>
-
+                <h2 className="text-lg font-bold">Personalized Itineraries</h2>
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  cumque tempore est ab possimus quisquam reiciendis tempora
-                  animi! Quaerat, saepe?
+                  Enjoy itineraries tailored to your preferences, curated just for you.
                 </p>
               </div>
             </div>
+
           </div>
         </div>
       </section>

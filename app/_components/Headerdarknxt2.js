@@ -1,6 +1,6 @@
 import React from "react";
 
-function Headerdarknext2() {
+function Headerdarknext() {
   return (
     <div>
       <header className="bg-white dark:bg-gray-900">
@@ -38,7 +38,16 @@ function Headerdarknext2() {
                   <li>
                     <a
                       className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                      href="#"
+                      href="/Tripplanner"
+                    >
+                      Trip planner
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                      href="/About"
                     >
                       About
                     </a>
@@ -47,12 +56,19 @@ function Headerdarknext2() {
                   <li>
                     <a
                       className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                      href="#"
+                      href="/Connections"
                     >
-                      Services
+                      Connections
                     </a>
                   </li>
-
+                  <li>
+                    <a
+                      className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                      href="/connecteduser"
+                    >
+                      Connected User
+                    </a>
+                  </li>
                   <li>
                     <a
                       className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
@@ -71,4 +87,4 @@ function Headerdarknext2() {
   );
 }
 
-export default Headerdarknext2;
+export default Headerdarknext;
