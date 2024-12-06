@@ -5,12 +5,14 @@ import { TextHoverEffectDemo } from '../_components/greattext';
 import Procard from '../_components/Procard';
 import Newcard from '../_components/Newcard';
 
+import Music from '../_components/Music'
+
 function About() {
   return (
     <div className="bg-gray-900 text-white">
       {/* Header */}
       <Headerdarknext />
-      
+      <Music/>
       {/* Hover Effect Text */}
       <TextHoverEffectDemo />
       
