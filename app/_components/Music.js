@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <div style={{ color: "grey" ,textAlign: "center", marginTop: "50px" }}>
       <button onClick={isPlaying ? handlePause : handlePlay}>
-        {isPlaying ? "Pause Music" : "Play Music = You can play only if your logged in :) "}
+        {isPlaying ? "Pause Music = You can play only if your logged in! :)" : "Play Music"}
       </button>
       {/* Audio element */}
       <audio
