@@ -80,9 +80,9 @@ export default function Bloghero() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen text-gray-900 font-sans">
+    <div className="bg-[#111827] min-h-screen text-gray-900 font-sans">
       <header className="text-center py-8">
-        <h1 className="text-4xl font-bold text-gray-800">Travel Blogs</h1>
+        <h1 className="text-4xl font-bold text-gray-100">Travel Blogs</h1>
         <p className="mt-2 text-gray-500 italic">Stories from around the globe</p>
       </header>
       
