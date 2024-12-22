@@ -20,7 +20,7 @@ function NewCard() {
           {/* Description */}
           <p className="text-gray-300 mb-6 text-sm md:text-base">
           Travel Hub is your one-stop destination for all your travel needs. Plan your trips, connect with like-minded travelers, and explore trending travel blogs—all in one place!
-          <br/><br/>This is a group project done for the course CS201 at IIIT Raichur.
+          <br/><br/>This is a group project done for the course CS210 at IIIT Raichur.
           </p>
 
           {/* Tech Stack */}
