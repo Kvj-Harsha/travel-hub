@@ -1,7 +1,7 @@
 
 # 🌍 Travel Hub
 
-**Travel Hub** is your one-stop destination for all your travel needs. Plan your trips, connect with like-minded travelers, and explore trending travel blogs—all in one place!
+**Travel Hub** is your one-stop destination for all your travel needs!. Plan your trips, connect with like-minded travelers, and explore trending travel blogs—all in one place!
 
 ---
 
