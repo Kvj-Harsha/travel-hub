@@ -86,7 +86,11 @@ Thanks to all contributors and the amazing tools that make **Travel Hub** possib
 This project is brought to you by:
 
 1. **K V Jaya Harsha**  
-2. **Others**  
+2. **Y Santosh**  
+3. **G Jashwanth Naik**
+4. **K vijay Narasimha Goud**
+5. **N S Murthy**
+6. **S Jaswanth**
 
 We’re grateful for everyone who has contributed to the success of Travel Hub! 🎉
 
