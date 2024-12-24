@@ -88,7 +88,7 @@ This project is brought to you by:
 1. **K V Jaya Harsha**  
 2. **Y Santosh**  
 3. **G Jashwanth Naik**
-4. **K vijay Narasimha Goud**
+4. **K Vijay Narasimha Goud**
 5. **N S Murthy**
 6. **S Jaswanth**
 
